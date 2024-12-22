@@ -1,0 +1,107 @@
+import pyautogui
+import time
+import webbrowser
+import pyperclip
+
+# bot de curtidas e comentários do instagram 
+# - Criar um bot que define qual pagina quer seguir, 
+# verifica se a postagem mais atual ainda nao foi curtida pelo bot. 
+# Caso uma nova postagem tenha sido feita, ele deve entrar nessa postagem, curtir e comentar algo nela
+'------------------------------------------------'
+# -- Pedir o nome de uma conta para vigiar
+# -- Entrar em um loop while True (Pedir permissão para começar)
+# -- Abrir o instagram 
+# -- Curtir a ultima foto SE ela nao foi curtida e comentar algo nela (se ainda nao foi curtida)
+# -- Ver se tem alguma publicação nova para curtir e comentar algo. (posso dar um timer aí de 12 horas ou 24 horas)
+'-------------------------------------------------'
+# pyautogui.alert(): Exibe uma mensagem de alerta.
+# pyautogui.confirm(): Exibe uma caixa de diálogo com botões de confirmação.
+# pyautogui.prompt(): Exibe uma caixa de entrada de texto.
+# pyautogui.password(): Exibe uma caixa de entrada de texto para senhas (caracteres ocultos).
+# '------------------------------------------------'
+def copiar_nome_conta(copiar):
+    pyperclip.copy(copiar)
+    pyautogui.hotkey('ctrl', 'v')
+
+nome_da_conta='' 
+
+# ------------------------------------------------------------------------
+
+while nome_da_conta == '' or nome_da_conta.isspace():
+    nome_da_conta = pyautogui.prompt(
+        title='ATENÇÃO', 
+        text='Antes de começar, preciso que você coloque o nome da conta que você deseja "vigiar":'
+    )
+    if nome_da_conta is None:
+        pyautogui.alert(
+            title='ATENÇÂO',
+            text='Operação cancelada com sucesso!'
+        )
+        exit()
+    elif nome_da_conta == '' or nome_da_conta.isspace():
+        pyautogui.alert(
+            title='ATENÇÃO', 
+            text='Este campo não pode ficar em branco.'
+            )
+        
+# -------------------------------------------------------------------------
+while True:
+    permissão_para_continuar = pyautogui.confirm(
+        title='PERMISSÃO',
+        text='A partir daqui, a automação terá início. Você tem certeza que deseja começar?',
+        buttons=['Sim, começar!', 'Cancelar.']
+        )
+    
+    if permissão_para_continuar == 'Cancelar.':
+        pyautogui.alert(
+            title='ATENÇÃO',
+            text='Automação cancelada com sucesso.'
+            )
+        exit()
+    else:
+        break
+# --------------------------------------------------------------------------
+# Aqui começa a parte do instagram 
+time.sleep(0.3)
+webbrowser.open('https://instagram.com')
+time.sleep(2)
+print(pyautogui.locateCenterOnScreen("PyAUTOGUI/lupainstagram2.png", confidence=0.5))
+# clicando na lupa 
+pyautogui.click(45, 331, duration=1.7)
+time.sleep(1)
+# escrevendo o nome
+copiar_nome_conta(nome_da_conta)
+time.sleep(1)
+# clicando na conta
+pyautogui.move(137,0, duration=0.89)
+pyautogui.click()
+time.sleep(1)
+# indo na primeira foto 
+pyautogui.move(0, 500, duration=1)
+pyautogui.click()
+time.sleep(1.3)
+# localizando se o coração esta ou nao 
+coracao_curtido = (255,48,64)
+coracao_nao_curtido = (0, 0, 0)
+# ultimo loop 
+while True:
+    coracao_atual = pyautogui.pixel(392,678)
+    if coracao_atual == coracao_nao_curtido:
+        time.sleep(0.6)
+        print('Vou curtir e comentar')
+        pyautogui.click(389,677, duration=0.7)
+        time.sleep(1)
+        pyautogui.click(438,679, duration=0.5)
+        time.sleep(1)
+        pyautogui.typewrite('Incrivel!')
+        time.sleep(0.6)
+        pyautogui.hotkey('enter')
+        time.sleep(0.9)
+        pyautogui.hotkey('esc')
+        time.sleep(86400)
+        pyautogui.hotkey('ctrl', 'r')
+    elif coracao_atual == coracao_curtido:
+        print('coração detectado!')
+        pyautogui.hotkey('esc')
+        time.sleep(86400)
+        pyautogui.hotkey('ctrl', 'r')
