@@ -1,0 +1,35 @@
+import pyautogui
+from time import sleep
+import win32api
+import win32con
+# zerar esse jogo: https://gameforge.com/en-US/littlegames/magic-piano-tiles/ 
+
+# Ajustes: 
+pyautogui.moveTo(464,219, duration=0.9)
+sleep(0.9)
+pyautogui.scroll(3000)
+
+# Iniciar:
+pyautogui.click(468,568, duration=0.7)
+sleep(7)
+
+# Start:
+pyautogui.click(469,520, duration=0.7)
+
+# Função para clicar:
+def clicando(x,y):
+    win32api.SetCursorPos((x,y + 140))
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0)
+    sleep(0.05)
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0)
+
+# Loop:
+while True:
+    if pyautogui.pixelMatchesColor(348,754, (0,0,0)):
+        clicando(348,550)
+    elif pyautogui.pixelMatchesColor(434,759, (0,0,0)):
+        clicando(434,550)
+    elif pyautogui.pixelMatchesColor(521,756, (0,0,0)):
+        clicando(521,550)
+    elif pyautogui.pixelMatchesColor(626,757, (0,0,0)):
+        clicando(626,550)
